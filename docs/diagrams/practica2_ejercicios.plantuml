@@ -1,0 +1,101 @@
+@startuml ejercicio
+
+'B-1
+
+class teclado
+class tecla
+
+teclado o-- "105..*" tecla
+
+'B-2
+
+class persona
+class empleado
+class estudiante
+class profesor
+
+empleado --|> persona
+profesor --|> empleado
+estudiante --|> persona
+
+'B-8
+
+class lab
+class equipo
+class lab_nuclear
+class equipo_nuclear
+
+lab -- "*" equipo:Tiene
+lab_nuclear --|> lab
+equipo_nuclear --|> equipo
+lab_nuclear -- "*" equipo_nuclear:Tiene
+
+'B-11
+
+class doc_grafico
+class hoja
+class grupo
+class objeto_dibujo
+class texto
+class figura
+class cuadrado
+class circulo
+
+hola "1..*" --* doc_grafico
+objeto_dibujo --o hoja
+grupo --|> objeto_dibujo
+objeto_dibujo "2" --o grupo
+texto --|> objeto_dibujo
+figura --|> objeto_dibujo
+cuadrado --|> figura
+circulo --|> figura 
+
+'D
+
+object exp1{
+    op_binario="/"
+}
+
+object exp2{
+    op_binario="+"
+}
+
+object exp3{
+    op_binario="/"
+}
+
+object var1{
+    nombre="X"
+}
+
+object var2{
+    nombre="Y"
+}
+
+object const1{
+    val="2"
+}
+
+object exp4{
+    op_binario="+"
+}
+
+object exp5{
+    op_binario="/"
+}
+
+object const2{
+    val="3"
+}
+
+exp2 --o exp1
+var1 --o exp2
+exp3 --o exp2
+var2 --o exp3
+const1 --o exp3
+var2 --o exp4
+exp5 --o exp4
+var1 --o exp5
+const2 --o exp5
+
+@enduml

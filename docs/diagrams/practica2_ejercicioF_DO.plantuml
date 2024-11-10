@@ -1,0 +1,69 @@
+@startuml Diagrama de Objetos
+
+' Instancias de la clase Equipo
+object equipo1 {
+    nombre = "Venezuela"
+    registro = "VEN123"
+    jugadores = 20
+}
+
+object equipo2 {
+    nombre = "Colombia"
+    registro = "COL456"
+    jugadores = 20
+}
+
+' Instancias de la clase Jugador
+object jugador1 {
+    Numero = 7
+    Posicion = "zaguero izquierdo"
+    Tipo = "Capitan"
+Telefono = "123456789"
+    Nombre = "Carlos Perez"
+    Direccion = "23 de Enero"
+}
+
+object jugador2 {
+    Numero = 5
+    Posicion = "zaguero derecho"
+    Tipo = "Jugador"
+Telefono = "987654321"
+    Nombre = "Luis Martinez"
+    Direccion = "Barranquilla"
+}
+
+' Instancias de la clase Entrenador
+object entrenador1 {
+    Nivel_acreditacion = "Avanzado"
+    Anios_experiencia = 10
+Telefono = "555666777"
+    Nombre = "Miguel Lopez"
+    Direccion = "Plaza Venezuela"
+}
+
+object entrenador2 {
+    Nivel_acreditacion = "Intermedio"
+    Anios_experiencia = 6
+Telefono = "444555666"
+    Nombre = "Andres Sanchez"
+    Direccion = "Cali"
+}
+
+' Instancia de la clase Juego
+object juego1 {
+    Localidad = "Estadio Nacional"
+    Puntuacion = "2-1"
+    Itinerario = "Domingo, 15:00"
+}
+
+' Relaciones entre objetos
+
+
+jugador1 --* equipo1
+jugador2 --* equipo2
+entrenador1 --o equipo1
+entrenador2 --o equipo2
+juego1 --* equipo1
+juego1 --* equipo2
+
+@enduml

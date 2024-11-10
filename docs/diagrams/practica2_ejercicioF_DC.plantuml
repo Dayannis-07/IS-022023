@@ -1,0 +1,42 @@
+@startuml Diagrama de Clase
+
+class Persona{
+    #Telefono
+    #Nombre
+    #Direccion
+}
+
+class Jugador{
+    #Numero
+    #Posicion
+    #Tipo
+    +Cantidad_partidos()
+}
+
+class Entrenador{
+    #Nivel_acreditacion
+    #Anios_experiencia
+    +Cronograma()
+}
+
+class Equipo{
+    #Nombre
+    #Registro
+    #Jugadores
+    +Cantidad_competencias()
+}
+
+class Juego{
+    #Localidad
+    #Puntuacion
+    +Itinerario()
+}
+
+Jugador --|> Persona
+Entrenador --|> Persona
+Equipo "1..*" *-- "1..*" Juego:Compiten
+Jugador "6..20" --* Equipo: Tiene
+Equipo o-- Entrenador #green;text:green : Compuesto  >
+Equipo "1..*" -- Entrenador #red;text:red :Prepara <
+
+@enduml

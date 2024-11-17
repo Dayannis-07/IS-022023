@@ -1,0 +1,35 @@
+@startuml Diagrama de Estado
+state Armar_pedido
+state Opcion1 <<choice>>
+state Obtener_producto
+state Validar_pedido
+state Metodo_envio
+state Opcion2 <<choice>>
+state Avion
+state Barco
+state Opcion3 <<choice>>
+state Pedido_realizado
+state Encuesta_satisfaccion
+state Proceso_culminado
+state Fin
+
+[*] --> Armar_pedido : Encargar pedido
+Armar_pedido -> Opcion1 : Pagar
+Opcion1--> Validar_pedido : No
+Opcion1--> Obtener_producto : Si
+Validar_pedido -> Obtener_producto: Cobrar
+Obtener_producto -> Opcion2 : Enviar
+Opcion2--> Validar_pedido : No
+Opcion2 --> Metodo_envio: Si
+Metodo_envio -> Opcion3 : Urgente
+Opcion3-->Avion : Si
+Opcion3-->Barco: No
+Avion -d-> Pedido_realizado
+Barco-> Pedido_realizado
+
+Pedido_realizado-> Encuesta_satisfaccion: Dar cervezas
+Encuesta_satisfaccion --> Proceso_culminado: Añadir a la lista
+Proceso_culminado -d-> Fin: Enviar recibo
+Fin--> [*]
+
+@enduml

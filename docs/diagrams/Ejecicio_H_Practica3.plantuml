@@ -1,0 +1,31 @@
+@startuml Diagrama de Comunicacion
+
+skinparam noteBackgroundColor transparent
+skinparam noteBorderColor transparent
+hide members
+
+object ": Registro" as registro
+object ": Catalogo" as catalogo
+object ": Ventas" as ventas
+
+registro -r-> catalogo
+note on link
+    1: getEspecificacion(Id)
+end note
+
+catalogo -r-> registro 
+note on link
+    2: Id
+end note
+
+registro -d-> ventas
+note on link
+    3: crealLineaVenta(espec,cant)
+end note
+
+ventas -d-> ventas
+note on link
+    4: añadir(newLineaVenta(espec,cant))
+end note
+
+@enduml

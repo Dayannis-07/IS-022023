@@ -25,7 +25,7 @@ Metodo_envio -> Opcion3 : Urgente
 Opcion3-->Avion : Si
 Opcion3-->Barco: No
 Avion -d-> Pedido_realizado
-Barco-> Pedido_realizado
+Barco -d-> Pedido_realizado
 
 Pedido_realizado-> Encuesta_satisfaccion: Dar cervezas
 Encuesta_satisfaccion --> Proceso_culminado: Añadir a la lista

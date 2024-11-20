@@ -5,8 +5,8 @@ state Obtener_producto
 state Validar_pedido
 state Metodo_envio
 state Opcion2 <<choice>>
-state Avion
-state Barco
+state Aereo
+state Maritimo
 state Opcion3 <<choice>>
 state Pedido_realizado
 state Encuesta_satisfaccion
@@ -22,10 +22,10 @@ Obtener_producto -> Opcion2 : Enviar
 Opcion2--> Validar_pedido : No
 Opcion2 --> Metodo_envio: Si
 Metodo_envio -> Opcion3 : Urgente
-Opcion3-->Avion : Si
-Opcion3-->Barco: No
-Avion -d-> Pedido_realizado
-Barco -d-> Pedido_realizado
+Opcion3-->Aereo : Si
+Opcion3-->Maritimo: No
+Aereo -d-> Pedido_realizado
+Maritimo -d-> Pedido_realizado
 
 Pedido_realizado-> Encuesta_satisfaccion: Dar cervezas
 Encuesta_satisfaccion --> Proceso_culminado: Añadir a la lista

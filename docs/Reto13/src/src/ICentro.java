@@ -161,7 +161,7 @@ public class ICentro extends JFrame implements ActionListener {
             String ciResponsable = ciEquipoText.getText(); // Obtener el texto de ciEquipoText
             String cantidadEquipos= cantidadText.getText();
             String costo= costoUnitarioText.getText();
-            IReporte nuevaVentana = new IReporte(ciResponsable, cantidadEquipos, costo); // Pasar el texto al constructor
+            IReporte nuevaVentana = new IReporte(); // Pasar el texto al constructor
             //IReporte nuevaVentana = new IReporte();
             nuevaVentana.setVisible(true);
             nuevaVentana.setBounds(0, 0, 700, 400); // Dimensiones de la nueva ventana
@@ -172,23 +172,23 @@ public class ICentro extends JFrame implements ActionListener {
         }
         if (e.getSource() == registrarData) {
             try {
-                File archivo = new File("inventario.txt");
+                File file = new File("inventario.txt");
 
                 // Crear el archivo si no existe
-                if (!archivo.exists()) {
-                    archivo.createNewFile();
+                if (!file.exists()) {
+                    file.createNewFile();
                 }
 
                 // Escribir los datos en el archivo
-                FileWriter escribirArchivo = new FileWriter(archivo, true);
-                escribirArchivo.write(descripcionText.getText() + "#");
-                escribirArchivo.write(cantidadText.getText() + "#");
-                escribirArchivo.write(costoUnitarioText.getText() + "#");
-                escribirArchivo.write(fechaAdquisicionText.getText() + "#");
-                escribirArchivo.write(nroFacturaText.getText() + "#");
-                escribirArchivo.write(ciEquipoText.getText());
-                escribirArchivo.write("\n");
-                escribirArchivo.close();
+                FileWriter writer = new FileWriter(file, true);
+                writer.write(descripcionText.getText() + "#");
+                writer.write(cantidadText.getText() + "#");
+                writer.write(costoUnitarioText.getText() + "#");
+                writer.write(fechaAdquisicionText.getText() + "#");
+                writer.write(nroFacturaText.getText() + "#");
+                writer.write(ciEquipoText.getText());
+                writer.write("\n");
+                writer.close();
 
                 JOptionPane.showMessageDialog(this, "Datos registrados correctamente.");
 
@@ -233,7 +233,7 @@ class IReporte extends JFrame implements ActionListener  {
     RoundButton continuar;
     RoundButton totalizar;
 
-    public IReporte(String ciResponsable,String cantidadEquipos,String costo){
+    public IReporte(){
         setLayout(null);//indico que voy a usar coodernadas
 
         titulo1 = new JLabel("Registro y control de Equipos en Centro de Investigación");
@@ -270,25 +270,26 @@ class IReporte extends JFrame implements ActionListener  {
         ciEquipoR.setBounds(10,70,250,30);
         add(ciEquipoR);
 
-        ciEquipoRText = new JTextField(ciResponsable);
+        ciEquipoRText = new JTextField();
         ciEquipoRText.setBounds(200,77,130,20);
-        ciEquipoRText.setEditable(false); // Deshabilitar edición
+        ciEquipoRText.setEditable(true); // habilitar edición
         add(ciEquipoRText);
 
         totalizar = new RoundButton("Totalizar", 20, 20);
         totalizar.setBounds(350,73,90,30);
         totalizar.setBackground(new Color(200, 196, 196));
         add(totalizar);
+        totalizar.addActionListener(this);
 
         totalEquipos = new JLabel("Totalizacion:");
         totalEquipos.setBounds(10,190,250,30);
         add(totalEquipos);
 
-        totalEquipos1 = new JLabel(cantidadEquipos+" equipos");
+        totalEquipos1 = new JLabel("____equipos");
         totalEquipos1.setBounds(10,205,250,30);
         add(totalEquipos1);
 
-        totalEquipos2 = new JLabel(costo+" Bs.");
+        totalEquipos2 = new JLabel("______Bs.");
         totalEquipos2.setBounds(10,220,250,30);
         add(totalEquipos2);
 
@@ -304,6 +305,9 @@ class IReporte extends JFrame implements ActionListener  {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == totalizar) {
+            totalizarEquipos();
+        }
         if (general.isSelected()) {
             // Abrir nueva ventana y cerrar la actual
             IReporte2 reporteGeneral = new IReporte2(totalEquipos1.getText(),totalEquipos2.getText(), "inventario.txt");
@@ -324,8 +328,38 @@ class IReporte extends JFrame implements ActionListener  {
         }
     }
 
+    private void totalizarEquipos() {
+        String ci = ciEquipoRText.getText().trim();
+
+        int totalCantidad = 0;
+        double totalCosto = 0.0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("inventario.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("#");
+                if (parts.length == 6 && parts[5].equals(ci)) {
+                    // Parsear y sumar los valores
+                    int cantidad = Integer.parseInt(parts[1]);
+                    double costo = Double.parseDouble(parts[2]);
+                    totalCantidad += cantidad;
+                    totalCosto += cantidad * costo; // Totalizar costo
+                }
+            }
+
+            // Actualizar las etiquetas
+            totalEquipos1.setText(totalCantidad + " equipos");
+            totalEquipos2.setText(totalCosto + " Bs.");
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error al leer el archivo: " + ex.getMessage());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Error en el formato del archivo.");
+        }
+    }
+
     public static void main(String[] args) {
-        IReporte reporte = new IReporte("","","");
+        IReporte reporte = new IReporte();
         reporte.setTitle("IReporte");
         reporte.setBounds(0,0,700,400);//dimension de la interfaz
         reporte.setVisible(true);//la interfaz es visible
@@ -473,7 +507,7 @@ class IReporte2 extends JFrame implements ActionListener  {
         // Manejo de acciones para los botones de radio (opcional)
         if (e.getSource() == individual) {
             // Abrir nueva ventana
-            IReporte nuevaVentana = new IReporte("","","");
+            IReporte nuevaVentana = new IReporte();
             nuevaVentana.setVisible(true);
             nuevaVentana.setBounds(0, 0, 700, 400); // Dimensiones de la nueva ventana
             nuevaVentana.setLocationRelativeTo(null);
